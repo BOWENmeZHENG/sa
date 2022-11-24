@@ -1,4 +1,4 @@
-def write_pymodel(r_out=0.3, r_in=0.2, width=0.1, spoke_width=0.04, num_spokes=3, init_angle=0,
+def write_pymodel(index=0, r_out=0.3, r_in=0.2, width=0.1, spoke_width=0.04, num_spokes=3, init_angle=0,
                   E=1e8, mu=0.3, load=10000, meshsize=0.03, r_depth=0.02, r_pressure=0.1,
                   results_location='C:/Users/bowen/Desktop/sa/',
                   part_name='wheel', material_name='wheel_material', section_name='wheel_section',
@@ -9,6 +9,7 @@ def write_pymodel(r_out=0.3, r_in=0.2, width=0.1, spoke_width=0.04, num_spokes=3
 
     with open(results_location + filename + '.py', 'w') as f:
         f.write("import abaqus_utils as ut\n")
+        f.write(f"index = {index}\n")
         # Derived values
         f.write(f"s_pt_whole, s_pt_lateral, s_pt_extr, s_pt_out_edge, spoke_start, s_pts_spoke = ut.derived_values({r_in}, {r_out}, {width}, {spoke_width})\n")
         # Define wheel geometry
@@ -32,7 +33,7 @@ def write_pymodel(r_out=0.3, r_in=0.2, width=0.1, spoke_width=0.04, num_spokes=3
         # Access results
         f.write(f"nodalS11 = ut.post_process('{job_name}')\n")
         # csv files for ML
-        f.write(f"ut.output_csv(mypart, '{results_location}', nodalS11, '{filename}')\n")
+        f.write(f"ut.output_csv(index, nodalS11)\n")
     return filename
 
 
