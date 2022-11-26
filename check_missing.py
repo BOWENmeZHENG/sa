@@ -11,7 +11,5 @@ def missing_cases():
             missed.append(idx)
     return missed
 
-m = missing_cases()
-print(m)
 
 
